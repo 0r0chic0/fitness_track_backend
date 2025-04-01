@@ -3,6 +3,7 @@ import datetime
 
 from pydantic import EmailStr
 from sqlmodel import Field, Relationship, SQLModel
+from datetime import datetime
 
 
 
@@ -45,7 +46,7 @@ class UpdatePassword(SQLModel):
 class User(UserBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     hashed_password: str
-    tasks: list["Task"] = Relationship(back_populates="owner", cascade_delete=True)
+    activities: list["Activity"] = Relationship(back_populates="owner", cascade_delete=True)
 
 
 # Properties to return via API, id is always required
@@ -110,17 +111,41 @@ class NewPassword(SQLModel):
     new_password: str = Field(min_length=8, max_length=40)
 
 #Task-based classes
-class TaskBase(SQLModel):
+class ActivityBase(SQLModel):
     description: str | None = Field(default=None, max_length=255)
-    in_progress: bool = False
-    due_time: datetime.datetime
+    in_progress: bool = Field(default=False)
+    last_workout: datetime
+    calories_burned: int
 
-class Task(TaskBase, table = True)
+class Activity(ActivityBase, table = True)
     id: uuid.UUID = (default_factory=uuid.uuid4, primary_key=True)
     owner_id: uuid.UUID = Field(
         foreign_key="user.id", nullable=False, ondelete="CASCADE"
     )
-    owner: User | None = Relationship(back_populates="tasks")
+    owner: User | None = Relationship(back_populates="activities")
+
+class ActivityCreate(ActivityBase):
+    pass
+
+class ActivityUpdate(ActivityBase):
+    description: str | None = Field(default=None, max_length=255) 
+    in_progress: bool | None = Field(default = False)
+    last_workout: datetime | None = Field(default=None)
+    calories_burned: int | None = Field(default=None)
+
+# Properties to return via API, id is always required
+class ActivityPublic(ActivityBase):
+    id: uuid.UUID
+    owner_id: uuid.UUID
+
+
+class ActivitiesPublic(SQLModel):
+    data: list[ActivityPublic]
+    count: int
+
+
+    
+
 
 
 
