@@ -117,8 +117,8 @@ class ActivityBase(SQLModel):
     last_workout: datetime
     calories_burned: int
 
-class Activity(ActivityBase, table = True)
-    id: uuid.UUID = (default_factory=uuid.uuid4, primary_key=True)
+class Activity(ActivityBase, table = True):
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     owner_id: uuid.UUID = Field(
         foreign_key="user.id", nullable=False, ondelete="CASCADE"
     )

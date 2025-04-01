@@ -5,11 +5,11 @@ from fastapi import APIRouter, HTTPException
 from sqlmodel import func, select
 
 from app.api.deps import CurrentUser, SessionDep
-from app.models import Activity, ActivityCreate, ActivityPublic, ActivitesPublic, ActivityUpdate, Message
+from app.models import Activity, ActivityCreate, ActivityPublic, ActivitiesPublic, ActivityUpdate, Message
 
 router = APIRouter(prefix="/activities", tags=["activities"])
 
-@router.get("/", response_model=ActivitesPublic)
+@router.get("/", response_model=ActivitiesPublic)
 def read_activities(
     session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
 ) -> Any:
@@ -37,7 +37,7 @@ def read_activities(
         )
         activities = session.exec(statement).all()
 
-    return ActivitesPublic(data=activities, count=count)
+    return ActivitiesPublic(data=activities, count=count)
 
 
 @router.get("/{id}", response_model=ActivityPublic)
