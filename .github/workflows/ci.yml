@@ -39,6 +39,11 @@ jobs:
           pip install --upgrade pip
           pip install .
           pip install .[dev]
+      
+      - name: Run DB migrations
+        working-directory: backend
+        run: alembic upgrade head
+
 
       - name: Run tests
         working-directory: backend
