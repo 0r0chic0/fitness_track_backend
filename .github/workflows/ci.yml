@@ -42,6 +42,11 @@ jobs:
       
       - name: Run DB migrations
         working-directory: backend
+        env:
+          POSTGRES_SERVER: localhost
+          POSTGRES_DB: app
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: changethis
         run: alembic upgrade head
 
 
