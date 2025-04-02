@@ -43,12 +43,12 @@ jobs:
       - name: Run tests
         working-directory: backend
         env:
-        POSTGRES_SERVER: localhost
-        POSTGRES_DB: app
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: changethis
+          POSTGRES_SERVER: localhost
+          POSTGRES_DB: app
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: changethis
         run: |
-          pytest -v --maxfail=1 --disable-warnings      
+          pytest -v --maxfail=1 --disable-warnings
 
   docker-push:
     needs: backend
