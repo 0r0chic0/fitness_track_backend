@@ -36,8 +36,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install -r backend/requirements.txt
-
+          pip install .
+          
       - name: Run tests
         env:
           POSTGRES_SERVER: localhost
