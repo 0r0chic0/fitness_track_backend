@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   backend:
@@ -37,26 +37,30 @@ jobs:
         working-directory: backend
         run: |
           pip install --upgrade pip
-          pip install .
           pip install .[dev]
-      
+
       - name: Run DB migrations
         working-directory: backend
         env:
           POSTGRES_SERVER: localhost
+          POSTGRES_PORT: 5432
           POSTGRES_DB: app
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: changethis
+          FIRST_SUPERUSER: admin@example.com
+          FIRST_SUPERUSER_PASSWORD: changethis
         run: alembic upgrade head
-
 
       - name: Run tests
         working-directory: backend
         env:
           POSTGRES_SERVER: localhost
+          POSTGRES_PORT: 5432
           POSTGRES_DB: app
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: changethis
+          FIRST_SUPERUSER: admin@example.com
+          FIRST_SUPERUSER_PASSWORD: changethis
         run: |
           pytest -v --maxfail=1 --disable-warnings
 
