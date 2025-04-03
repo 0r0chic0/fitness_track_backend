@@ -18,6 +18,7 @@ def test_create_item(
     )
     assert response.status_code == 200
     content = response.json()
+    print("content:", content)
     assert content["title"] == data["title"]
     assert content["description"] == data["description"]
     assert "id" in content
